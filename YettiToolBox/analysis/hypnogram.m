@@ -5,7 +5,7 @@ if nargin==0
 
 elseif nargin==1 % Stages only
     % disp('1 argument entered')
-    eStages = varargin{1}; % vector with respective stages
+    eStages = varargin{1}{1}; % vector with respective stages
     eNumbers = 1:size(eStages,2); % vector with epoch numbers
 
     for i=1:size(eNumbers,2)
@@ -39,8 +39,8 @@ elseif nargin==1 % Stages only
 elseif nargin==2 % Stages and Times only
   % default xaxis Style will be with Time (mins)
     disp('2 argument entered')
-    eStages = varargin{1}; % vector with respective stages
-    eTimes = varargin{2}; % vector with epoch times
+    eStages = varargin{1}{1}; % vector with respective stages
+    eTimes = varargin{2}{1}; % vector with epoch times
     eNumbers = 1:size(eStages,2); % vector with epoch numbers
 
     for i=1:size(eNumbers,2)

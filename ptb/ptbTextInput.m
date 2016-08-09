@@ -54,7 +54,7 @@ function [textOut, startTypingTime, endTypingTime] = ptbTextInput(...
         end
         KbQueueFlush();
         ch = KbBlockUntilKeypress();           
-        if strcmp(ch,'BackSpace') %backspace
+        if strcmp(ch,'BackSpace') || strcmp(ch,'DELETE') %backspace
             if ~isempty(textOut)
                 textOut = textOut(1:(end-1));
                 if ~isempty(textOut)
@@ -84,7 +84,6 @@ function [textOut, startTypingTime, endTypingTime] = ptbTextInput(...
             end
         else
             %add char to word (if its matchs reequiredType)
-            ch
             if strcmp(requiredType,'number')
                 if isnan(str2double(ch))
                     continue;

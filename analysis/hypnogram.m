@@ -1,4 +1,4 @@
-function [numOfPlots] = hypnoplot_single(varargin)
+function [numOfPlots] = hypnogram(varargin)
 
 if nargin==0
     error('No Stages Provided!')

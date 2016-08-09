@@ -1,16 +1,16 @@
 function finalTextBounds = myFormatStyle(ptb,text,textX,textY,color)
     ptb = saveWin(ptb,ptb.formatTextSlot);  
-    if isempty(text)
-        finalTextBounds = [0 0 0 0];
-        return
-    end
     if ~exist('color','var')
         color = [ 0 0 0 ];
     end
     formatChars = {'<n>','</n>','<i>','<b>','</b>','<u>','</u>'};
     formats = {'<n>','<b>','<i>','missing','<u>'};
     textStripped = stripFormatChars(text);
-    textStripped = strrep(textStripped,'<nl>','\n\n');
+    textStripped = strrep(textStripped,'<nl>',ptb.lineBreak);
+    if isempty(textStripped)
+        finalTextBounds = [textX textY textX textY];
+        return
+    end
     [~,~,finalTextBounds] = DrawFormattedText(ptb.win,textStripped,textX,textY,color); %%find out where this would have started if it was all normal
     if strcmp(textX,'center')    
         textX = finalTextBounds(1);
@@ -28,13 +28,11 @@ function finalTextBounds = myFormatStyle(ptb,text,textX,textY,color)
                 style = find(strcmp(matches{p},formats))-1;
                 Screen(ptb.win,'TextStyle',style);
             end
+            if isempty(formatTextParts{p})
+                continue;
+            end
             [~,~,tBounds] = DrawFormattedText(ptb.win,formatTextParts{p},textX,textY,color); %text is all on same level, so Y does not change
             textX = tBounds(3);
-%             if ~isempty(strfind(computer,'WIN')) %windozes and mac behave differnly. Why? Fucking dont know mate... silly!
-%                 
-%             else
-%                 textX = textBounds(4);                    
-%             end
         end
         Screen(ptb.win,'TextStyle',0); %reset syle
     end

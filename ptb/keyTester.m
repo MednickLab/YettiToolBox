@@ -1,5 +1,5 @@
 initKB();
 while (1)
     KbQueueWait()
-    [key,time] = getLastKey
+    [key,time] = getLastKey()
 end

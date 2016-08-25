@@ -1,9 +1,9 @@
-function data = removeXSD(data,sdLevel)
+function [data,removeIdx] = removeXSD(data,outlierXSD)
 %remove values (set to nan) data that is more that 2sd away
     if ~islogical(data) && ~iscell(data) && ~isstruct(data)
-        SD_outlier = sdLevel;
-        threshLow = mean(data,'omitnan') - SD_outlier*std(data,'omitnan');
-        threshHigh = mean(data,'omitnan') + SD_outlier*std(data,'omitnan');  
-        data(data <= threshLow | data >= threshHigh) = nan;
+        threshLow = mean(data,'omitnan') - outlierXSD*std(data,'omitnan');
+        threshHigh = mean(data,'omitnan') + outlierXSD*std(data,'omitnan');
+        removeIdx = data <= threshLow | data >= threshHigh;
+        data(removeIdx) = nan;
     end
 end

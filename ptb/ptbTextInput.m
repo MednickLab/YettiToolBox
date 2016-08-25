@@ -41,13 +41,15 @@ function [textOut, startTypingTime, endTypingTime] = ptbTextInput(...
         ptb=loadWin(ptb,saveSlot);
     end
     
-    if ~isempty(initText)
-        [~,~,textBounds] = DrawFormattedText(ptb.win, initText, 'center', textY, textColor);
+    if ~isempty(initText)      
+        [~,~,textBounds] = DrawFormattedText(ptb.win, sprintf('%s%s',initText,trailingChar), 'center', textY, textColor);
     end
     
     timeInit = Screen('Flip', ptb.win);
     newWord = true;
-    textOut = '';
+    textOut = initText;
+    startTypingTime=GetSecs();
+    endTypingTime=GetSecs();
     while(1) % wait for user input
         if dontClear
             ptb=loadWin(ptb,saveSlot);

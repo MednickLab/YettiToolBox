@@ -1,4 +1,7 @@
-function y = myExp(x,lambda)
+function y = myExp(x,lambda,c)
+    if ~exist('c','var')
+        c = lambda;
+    end
     %Exponential function as parameterized by JAGs
-    y=lambda*exp(-lambda.*x);
+    y=c*exp(-lambda.*x);
 end

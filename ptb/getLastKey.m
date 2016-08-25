@@ -9,7 +9,6 @@ function [key,timeOfPress] = getLastKey()
         elseif index>=47 && index<=57
             key = key(1);
         end
-        key
     else
         key = NaN;
         timeOfPress = NaN;

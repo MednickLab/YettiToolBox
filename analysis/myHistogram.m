@@ -7,19 +7,23 @@ function [counts,centers,edges] = myHistogram(data,nBins,xBins,myTitle,xLabel,yL
     end
     if ~isempty(nBins)
         [counts,edges] = histcounts(data,nBins,'Normalization',norm);
-        histogram(data,nBins,'Normalization',norm)
+        histogram(data,nBins,'Normalization',norm);
     elseif ~isempty(xBins)
         [counts,edges] = histcounts(data,xBins,'Normalization',norm);
-        histogram(data,xBins,'Normalization',norm)
+        histogram(data,xBins,'Normalization',norm);
     else
         [counts,edges] = histcounts(data,'Normalization',norm);
-        histogram(data,'Normalization',norm)
+        histogram(data,'Normalization',norm);
     end
     title(myTitle)
     xlabel(xLabel)
     ylabel(yLabel)
     centers = edges(1:end-1)+diff(edges)/2;
-    if plotly
-        fig2plotly('filename',title,'fileopt','overwrite')
+    if plotly  
+        bar(centers,counts)
+        title(myTitle)
+        xlabel(xLabel)
+        ylabel(yLabel)
+        fig2plotly();
     end
 end

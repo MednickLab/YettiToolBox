@@ -8,7 +8,7 @@ for i=1:length(starts)
     
     % Add lines
     ys = ylim;
-    h = text(mean([starts(i) ends(i)]),ys(2)-0.1,label,'HorizontalAlignment','center');
+    h = text(mean([starts(i) ends(i)]),ys(2)/2,label,'HorizontalAlignment','center','Color','black');
     set(h, 'rotation', 60)
     h1 = line([starts(i) starts(i)],ys);
     h2 = line([ends(i) ends(i)],ys);

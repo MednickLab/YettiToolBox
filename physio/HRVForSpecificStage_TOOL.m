@@ -1,10 +1,10 @@
-%A tool to output HRV information for consecuive periods of the same
-%stage. 
+%A tool to output HRV information for consecuive periods of specific stages. 
 % You will need:
 % a) A file containing RR peaks (in seconds) in Kubious .mat output format
-% (filename like: "SUBJECTID_hrv.mat")
+% (filename like: "SUBJECTID_hrv.mat").
 % b) A tab delimited stage file where the second colomn is stages, and no header.
-%   (filename like: "SUBJECTID.txt")
+%   (filename like: "SUBJECTID.txt"). Stage file and RR file should be
+%   timesynced
 %   The stage labels are:
 %   0=W
 %   1=N1
@@ -14,8 +14,7 @@
 %
 % The follwing rules will be applied:
 % 1) Find continous blocks of any of the stages defined in *stageIDs*
-% 2) For all continous blocks greater than
-% *priorToBinEpochs*+*binLengthInEpochs* length:
+% 2) For all continous blocks greater than *priorToBinEpochs*+*binLengthInEpochs* length: 
 %   3) Discard first *priorToBinEpochs* of that stage
 %   4) For every consecuive *binLengthInEpochs* chunk after the discarded
 %      chunk, run HRV calculations

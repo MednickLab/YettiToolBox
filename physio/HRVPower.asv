@@ -51,7 +51,6 @@ end
 HRV_out.freqs=f;
 HRV_out.PSD=pxx;
 HRV_out.TP3mHzTo400mHz=sum(pxx(find(f>=0.003 & f<0.4))./pw_an_win);
-HRV_out.TP=sum(pxx./pw_an_win);
 HRV_out.LF=sum(pxx(find(f>=0.04 & f<0.15))./pw_an_win);
 HRV_out.HF=sum(pxx(find(f>=0.15 & f<0.4))./pw_an_win);
 HRV_out.lnTP = log(HRV_out.TP);

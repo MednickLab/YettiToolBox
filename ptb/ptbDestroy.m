@@ -1,10 +1,12 @@
-function ptbDestroy(screenSetup)
+function ptbDestroy(ptb)
 %kill exit shutdown and words of that ilk
     Screen('CloseAll');
-    Screen('Preference','Verbosity',screenSetup.origScreenLevel);
+    %Screen('Preference','Verbosity',screenSetup.origScreenLevel);
     KbDestroy();
     ShowCursor;
-    Screen('Preference','SuppressAllWarnings',screenSetup.oldEnableFlag);
+    if ptb.screenChecksOff
+    	Screen('Preference','SuppressAllWarnings',ptb.oldEnableFlag);
+    end
     disp('Thank You')
     fclose('all');
     sca

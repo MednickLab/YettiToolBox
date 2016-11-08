@@ -1,5 +1,7 @@
-function myAnova(y,X,tit,ylab,xlab,omitOutliers) 
-    anovan(y,X,'model','interaction','varnames',xlab)
-    %modelspec = 'y ~ cond*room';
-    %fitglm(X,y,modelspec)
+function myAnova(y,grouping,xLab)
+    if exist('xLab','var')
+        ps = anovan(y,grouping,'model','interaction','varnames',xLab);
+    else
+        ps = anovan(y,grouping,'model','interaction');
+    end
 end

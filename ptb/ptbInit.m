@@ -6,12 +6,14 @@ function [ptb] = ptbInit(screenNum,screenChecksOff)
     if ~exist('screenChecksOff','var')
         screenChecksOff=false;  % which screen to put things on
     end
+    ptb.screenChecksOff = screenChecksOff;
     if screenChecksOff
         ptb.oldEnableFlag = Screen('Preference', 'SuppressAllWarnings', 1); % Setting this preference to 1 suppresses the printlogger of warnings.
         Screen('Preference', 'SkipSyncTests', 1);
         ptb.origScreenLevel = Screen('Preference','Verbosity',1);  % Set to less verbose loggerput
     end
     ptb.screen = screenNum;
+    Screen('Preference', 'WindowShieldingLevel',2000); %2000=normal
     ptb.win = Screen(screenNum,'OpenWindow');  % Open the screen
     ptb.slack = Screen('GetFlipInterval', ptb.win)/2; 
     ptb.speedUp = 1; %speed up run time thoughtout tasks. Divide by this number when specifying times
@@ -25,26 +27,26 @@ function [ptb] = ptbInit(screenNum,screenChecksOff)
     [ptb,ptb.boundedTextSlot] = createSaveSlot(ptb);
     [ptb.xRes,ptb.yRes,ptb.cx,ptb.cy] = getScreenVars(screenNum);
     
-    if ptb.xRes > 1800
+    if ptb.xRes > 2000
         ptb.mainTextSize = 60;
         ptb.percentTextSize = 42;
         ptb.buttonTextSize = 32;      
     else
-        ptb.mainTextSize = 32;
+        ptb.mainTextSize = 36;
         ptb.percentTextSize = 24;
-        ptb.buttonTextSize = 16;
+        ptb.buttonTextSize = 20;
     end
     Screen('TextSize',ptb.win,ptb.mainTextSize);
     Screen('TextFont',ptb.win,'Arial');
     ptb.textColor = [0 0 0];
     ptb.bgColor = [255 255 255];
-    ptb.audioSampleRate = 44100;
-    InitializePsychSound(1); 
-    ptb.audioPort = PsychPortAudio('Open', [], [], [], ptb.audioSampleRate,1);
+    %% sound
+%     ptb.audioSampleRate = 44100;
+%     InitializePsychSound(1); 
+%     ptb.audioPort = PsychPortAudio('Open', [], [], [], ptb.audioSampleRate,1);
+    %% Input
     initKB();
     HideCursor;
-    
-
        
     %mouse states
     MOUSE_INIT = -1;

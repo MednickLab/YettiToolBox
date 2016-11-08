@@ -100,7 +100,7 @@ function [choice, choiceText, dispTime, clickTime, exit, ny] = ptbClickableChoic
     
     ny = buttonLocs{end}(4);
     if resetMouse
-         %SetMouse(ptb.cx,ny+10);
+         SetMouse(ptb.cx,ny+10);
     end
     ShowCursor();
     dispTime = GetSecs();%Screen('Flip', ptb.win);

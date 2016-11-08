@@ -1,5 +1,5 @@
-function [textOut, startTypingTime, endTypingTime,exit,endPressed] = ptbTextInput(...
-    initText,requiredChars, ptb, textColor,textY,dontClear,saveSlot,requiredType,trailingChar,limit)
+function [textOut, startTypingTime, endTypingTime, buttonClicked, exit] = ptbTextInputWithClickableChoice(...
+    initText,requiredChars, ptb, textColor,textY,clickableChoices,dontClear,saveSlot,requiredType,trailingChar,limit)
     %Allows for rendered text input. Init text is the inital text before user types. 
     % Required char's is the required amount of charaters before Enter
     % press will allow return. If dontClear is set then previously saved
@@ -9,7 +9,6 @@ function [textOut, startTypingTime, endTypingTime,exit,endPressed] = ptbTextInpu
     % limit on the numbers that can be entered. Currently only checked if
     % required type = 'number'
     exit = false;
-    endPressed = false;
     if ~exist('textColor','var')
         textColor = [0 0 0];
     end
@@ -44,7 +43,7 @@ function [textOut, startTypingTime, endTypingTime,exit,endPressed] = ptbTextInpu
     end
     
     if ~isempty(initText)      
-        DrawFormattedText(ptb.win, sprintf('%s%s',initText,trailingChar), 'center', textY, textColor);
+        [~,~,textBounds] = DrawFormattedText(ptb.win, sprintf('%s%s',initText,trailingChar), 'center', textY, textColor);
     end
     
     timeInit = Screen('Flip', ptb.win);
@@ -72,16 +71,10 @@ function [textOut, startTypingTime, endTypingTime,exit,endPressed] = ptbTextInpu
             textOut = ch;
             startTypingTime=nan;
             endTypingTime=nan;
-            exit = true;            
+            exit = true;
             return
-        elseif strcmp(ch,'End')
-            textOut = ch;
-            startTypingTime=nan;
-            endTypingTime=nan;
-            endPressed = true;            
-            return
-        elseif (strcmp(ch,'Return') || strcmp(ch,'Enter') || strcmp(ch,'ENTER')) %enter
-            %check if they have typed enough
+        elseif (strcmp(ch,'Return') || strcmp(ch,'Enter')) %enter
+            %check if they have typed enought
             if length(textOut) < requiredChars               
                 if ~isempty(textOut)
                     DrawFormattedText(ptb.win, textOut, 'center','center', textColor);

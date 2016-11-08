@@ -19,7 +19,7 @@ function resid = myRegressionWInterPlots(y,X,yLab,labls,inters,plotting,omitOutl
     end
     
     end
-    if omitOutliers
+    if exist('omitOutliers','var') && omitOutliers
         st4 = regstats(y,X,'linear','cookd');
         outliers = st4.cookd>mean(st4.cookd)*3;
         y = y(~outliers);
@@ -63,7 +63,7 @@ function resid = myRegressionWInterPlots(y,X,yLab,labls,inters,plotting,omitOutl
        sig='';
     end
     reg = [reg sprintf('%0.5f%s\n\n-----R2(adj)=%0.2f, p=%0.12f, df=%i-------\n\n',st1.tstat.beta(1),sig,st2.adjrsquare,st3.fstat.pval,st1.tstat.dfe)];     
-    if plotting
+    if exist('plotting','var') && ~isempty(plotting) && plotting
         figure('Position',[100,100,800,800])
         for i=1:xMainEffect 
             subplot(1+logical(length(inters)),xMainEffect,i)

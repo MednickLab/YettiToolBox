@@ -9,33 +9,29 @@ function [text,fits,textBounds] = formatBoundedText(ptb,x,y,text)
     ptb = saveWin(ptb,ptb.boundedTextSlot);
     textStripped = strrep(text,ptb.lineBreak,'<nl>');
     textStripped = stripFormatChars(textStripped);
+    charsThatFits = length(textStripped);
     %first check if there is a problem
-    [~,~,textBounds] = DrawFormattedText(ptb.win,textStripped,'center','center');
+    [~,~,textBounds] = DrawFormattedText(ptb.win,textStripped(1:charsThatFits),'center','center');
     currentX = textBounds(3)-textBounds(1);
     if currentX < x
         fits = true; 
         clearScreen(ptb.win,true);
         loadWin(ptb,ptb.boundedTextSlot);
         return;
-    end
-    [~,~,textPixBounds] = DrawFormattedText(ptb.win,'X','center','center');
-    textPix = textPixBounds(3)-textPixBounds(1);
-    charsThatFit = round(x/textPix); %start from front, its faster...
+    end 
+    charsThatFits = 2; %start from front, its faster...
     while(1)
-        [~,~,textBounds] = DrawFormattedText(ptb.win,textStripped(1:charsThatFit),'center','center');
+        [~,~,textBounds] = DrawFormattedText(ptb.win,textStripped(1:charsThatFits),'center','center');
         currentX = textBounds(3)-textBounds(1);
-        errorPix = currentX - x;
-        charsThatFit = round(charsThatFit-errorPix/textPix);
-        if charsThatFit < textStripped
-            break
-        end
-        if abs(errorPix/textPix) < 1
-            break
+        if currentX > x
+            break;
+        else
+            charsThatFits = charsThatFits+1;
         end
     end
-    charsThatFit = charsThatFit - 2; %to give a bit of padding...
+    charsThatFits = charsThatFits - 3; %to give a bit of padding...
     %we now have the size that fits
-    cutIdx = charsThatFit;
+    cutIdx = charsThatFits;
     lastCut = false;
     
     text = strrep(text,[' ' ptb.lineBreak ' '],'<nl>');
@@ -44,9 +40,9 @@ function [text,fits,textBounds] = formatBoundedText(ptb,x,y,text)
     text = strrep(text,ptb.lineBreak,'<nl>');
     [spaceTextParts] = strsplit(text,'<nl>');
     for sp = 1:length(spaceTextParts)
-        cutIdx = charsThatFit;
+        cutIdx = charsThatFits;
         if ~isempty(spaceTextParts{sp})    
-            if length(spaceTextParts{sp}) > charsThatFit
+            if length(spaceTextParts{sp}) > charsThatFits
                 while (1)
                     if ~strcmp(' ',spaceTextParts{sp}(cutIdx)) || cutIdx==length(spaceTextParts{sp}) %find spaces to break on
                         cutIdx = cutIdx-1;
@@ -56,14 +52,14 @@ function [text,fits,textBounds] = formatBoundedText(ptb,x,y,text)
                         end
                     else %we have a space
                         spaceTextParts{sp} = strinsrt(spaceTextParts{sp},cutIdx,ptb.lineBreak);
-                        if lastCut || (length(spaceTextParts{sp}) - cutIdx) < charsThatFit
+                        if lastCut || (length(spaceTextParts{sp}) - cutIdx) < charsThatFits
                             break;
                         end
-                        cutIdx = cutIdx + length(ptb.lineBreak) + charsThatFit; %set up for next cut
+                        cutIdx = cutIdx + length(ptb.lineBreak) + charsThatFits; %set up for next cut
                         if cutIdx > length(spaceTextParts{sp}) %stop indexing past end of text
                            cutIdx = length(spaceTextParts{sp}); 
                         end
-                        if (length(spaceTextParts{sp}) - cutIdx) < charsThatFit %check if this is the last cut needed
+                        if (length(spaceTextParts{sp}) - cutIdx) < charsThatFits %check if this is the last cut needed
                             lastCut = true;
                         end
                     end

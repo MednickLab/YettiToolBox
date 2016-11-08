@@ -12,7 +12,7 @@
 % Note #3: When the third argument (cell containing int for X-Axis Styling) is omitted, the X-Axis is labeled with mins (1440 min clock)
 
 
-function hypnoplot_test2(varargin)
+function hypnogram(varargin)
 
   if nargin==0
     error('No Stages Provided!')
@@ -47,8 +47,8 @@ function stagesOnly(stages)
     ax.YGrid = 'on';
   elseif numOfPlots>1
     % if there is more than one set of stage data, use subplots
-    D = cellfun('size',stages,2)
-    epochLimit = min(D)
+    D = cellfun('size',stages,2);
+    epochLimit = min(D);
 
     for n=1:numOfPlots
 
@@ -82,7 +82,7 @@ function stagesTimes(stages, times)
     eNumbers = 1:size(eStages,2); % vector with epoch numbers
 
     stairs(eNumbers,eStages,'Color',[0,0.25,0.63],'LineWidth',1.5);
-    xlabel('Time (mins)');
+    xlabel('Time');
     ax=gca;
     ax.Color=[0.81 0.81 0.81];
     eTicks = getHHMM(round(linspace(eTimes(1),eTimes(end),6)));
@@ -126,7 +126,7 @@ function stagesTimes(stages, times)
 
         subplot(numOfPlots,1,n)
         stairs(eNumbers,eStages,'Color',[0,0.25,0.63],'LineWidth',1.5);
-        xlabel('Time (mins)');
+        xlabel('Time');
         ax=gca;
         ax.Color=[0.81 0.81 0.81];
         eTicks = round(linspace(eTimes(1),eTimes(end),6));
@@ -153,7 +153,7 @@ function stagesTimesFormat(stages, times, style)
     eNumbers = 1:size(eStages,2); % vector with epoch numbers
 
     stairs(eNumbers,eStages,'Color',[0,0.25,0.63],'LineWidth',1.5);
-    xlabel('Time (mins)');
+    xlabel('Time');
     ax=gca;
     ax.Color=[0.81 0.81 0.81];
 
@@ -218,7 +218,7 @@ function stagesTimesFormat(stages, times, style)
 
         subplot(numOfPlots,1,n)
         stairs(eNumbers,eStages,'Color',[0,0.25,0.63],'LineWidth',1.5);
-        xlabel('Time (mins)');
+        xlabel('Time');
         ax=gca;
         ax.Color=[0.81 0.81 0.81];
 

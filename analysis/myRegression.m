@@ -5,7 +5,7 @@ function resid = myRegression(y,X,yLab,labls,omitOutliers)
     y = y(notNans);
     X = X(notNans,:);
     goodLocs = goodLocs(notNans);
-    if omitOutliers
+    if exist('omitOutliers','var') && omitOutliers
         st4 = regstats(y,X,'linear','cookd');
         outliers = st4.cookd>mean(st4.cookd)*3;
         y = y(~outliers);

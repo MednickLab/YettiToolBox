@@ -1,5 +1,5 @@
 function dataOut = zscoreAcrossVariables(dataIn)
-%takes a series of arrays, one for each element in the cell array *dataIn* 
+% takes a series of arrays, one for each element in the cell array *dataIn* 
 % and zscores across all data across all series of arrays, then repacks into input cell aray format 
     dataOut = cell(size(dataIn));
     allData = [dataIn{:}];

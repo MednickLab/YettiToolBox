@@ -50,12 +50,12 @@ end
 [pxx,f]=pwelch(detrend(RRts),pw_an_win*fi,pw_an_ovlp*fi,0:1/pw_an_win:0.5,fi);
 HRV_out.freqs=f;
 HRV_out.PSD=pxx;
-HRV_out.TP=sum(pxx(find(f>=0.04 & f<0.4))./pw_an_win);
+HRV_out.TP=sum(pxx(find(f>=0.003 & f<0.4))./pw_an_win);
 HRV_out.LF=sum(pxx(find(f>=0.04 & f<0.15))./pw_an_win);
 HRV_out.HF=sum(pxx(find(f>=0.15 & f<0.4))./pw_an_win);
-HRV_out.lnTP = log(TP);
-HRV_out.lnLF = log(LF);
-HRV_out.lnHF = log(HF);
+HRV_out.lnTP = log(HRV_out.TP);
+HRV_out.lnLF = log(HRV_out.LF);
+HRV_out.lnHF = log(HRV_out.HF);
 HRV_out.LF_HF_Ratio = HRV_out.LF/HRV_out.HF;
 HRV_out.nLF=HRV_out.LF/(HRV_out.LF+HRV_out.HF);   % VLF ignored
 HRV_out.nHF=1-HRV_out.nLF;

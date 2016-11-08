@@ -1,11 +1,16 @@
 %A tool to output HRV information for consecuive periods of the same
-%stage. Details:
+%stage. 
+% You will need:
+% a) A file containing RR peaks (in seconds) from Kubio
 %
-% 
 % The follwing rules are be applied:
-% 1) find 2 minutes of a single stage (e.g., N2,N2,N2,N2)
-% 2) check if the next 5-min are of the same stage (N2 x10). If there is any "sleep transition" (e.g., N2,N2, REM, N2, etc...), start again with #1. If so, select this as a "bin" and run HRV analysis on it and skip to #3.
-% 3) continue as 2.
+% 1) Find continous blocks of any of the stages defined in *stageIDs*
+% 2) For all continous blocks greater than
+% *priorToBinEpochs*+*binLengthInEpochs* length:
+%   3) Discard first *priorToBinEpochs* of that stage
+%   4) For every consecuive *binLengthInEpochs* chunk after the discarded
+%      chunk, run HRV calculations
+% 3) Print all analysised continous blocks (called bins) to xlsx file.
 %
 %The stage labels are:
 % 0=W
@@ -47,7 +52,7 @@ for f=1:length(HRVFiles)
     stageChunks = consecutiveValues(stages');
     validChunks = find(stageChunks.lengthSeqs>(priorToBinEpochs+binLengthInEpochs));
     HRVStruct = struct();
-    idx = 1;
+    binIdx = 1;
     cIdx = 0;
     for c = validChunks
         if ~any(stageChunks.vals(c)==stageIDs) %If this stage is not one we are interested in
@@ -57,29 +62,29 @@ for f=1:length(HRVFiles)
         splits = floor((stageChunks.lengthSeqs(c)-priorToBinEpochs)/binLengthInEpochs);
         s=1;
         for s=1:splits
-            HRVStruct.continousStageID(idx) = cIdx;
-            HRVStruct.binNumInContinousStage(idx) = s;
-            HRVStruct.stage(idx) = stageChunks.vals(c);
-            HRVStruct.startEpoch(idx) = stageChunks.startSeqs(c)+priorToBinEpochs+(s-1)*binLengthInEpochs;
-            HRVStruct.endEpoch(idx) = HRVStruct.startEpoch(idx)+binLengthInEpochs;
-            HRVStruct.startTime(idx) = HRVStruct.startEpoch(idx)*epochLen;                         
-            HRVStruct.endTime(idx) = HRVStruct.endEpoch(idx)*epochLen;
-            HRVStruct.duration(idx) = binLengthInEpochs*epochLen;
+            HRVStruct.continousStageID(binIdx) = cIdx;
+            HRVStruct.binNumInContinousStage(binIdx) = s;
+            HRVStruct.stage(binIdx) = stageChunks.vals(c);
+            HRVStruct.startEpoch(binIdx) = stageChunks.startSeqs(c)+priorToBinEpochs+(s-1)*binLengthInEpochs;
+            HRVStruct.endEpoch(binIdx) = HRVStruct.startEpoch(binIdx)+binLengthInEpochs;
+            HRVStruct.startTime(binIdx) = HRVStruct.startEpoch(binIdx)*epochLen;                         
+            HRVStruct.endTime(binIdx) = HRVStruct.endEpoch(binIdx)*epochLen;
+            HRVStruct.duration(binIdx) = binLengthInEpochs*epochLen;
             rrPeaksInSecs = rrPeaksInSecs-rrPeaksInSecs(1); %start at 0 seconds
-            rrForBin = rrPeaksInSecs(rrPeaksInSecs > HRVStruct.startTime(idx) & rrPeaksInSecs < HRVStruct.endTime(idx));
+            rrForBin = rrPeaksInSecs(rrPeaksInSecs > HRVStruct.startTime(binIdx) & rrPeaksInSecs < HRVStruct.endTime(binIdx));
             HRVBinData = HRVPower(rrForBin);
-            HRVStruct.nLF(idx) = HRVBinData.nLF;
-            HRVStruct.nHF(idx) = HRVBinData.nHF;
-            HRVStruct.HF(idx) = HRVBinData.HF;
-            HRVStruct.LF(idx) = HRVBinData.LF;
-            HRVStruct.meanHR(idx) = HRVBinData.meanHR;
-            HRVStruct.TP(idx) = HRVBinData.TP;
-            HRVStruct.lnTP(idx) = HRVBinData.lnTP;
-            HRVStruct.LF_HF_Ratio(idx) = HRVBinData.LF_HF_Ratio;
-            HRVStruct.lnHF(idx) = HRVBinData.lnHF;
-            HRVStruct.lnLF(idx) = HRVBinData.ln;
+            HRVStruct.nLF(binIdx) = HRVBinData.nLF;
+            HRVStruct.nHF(binIdx) = HRVBinData.nHF;
+            HRVStruct.HF(binIdx) = HRVBinData.HF;
+            HRVStruct.LF(binIdx) = HRVBinData.LF;
+            HRVStruct.meanHR(binIdx) = HRVBinData.meanHR;
+            HRVStruct.TP(binIdx) = HRVBinData.TP;
+            HRVStruct.lnTP(binIdx) = HRVBinData.lnTP;
+            HRVStruct.LF_HF_Ratio(binIdx) = HRVBinData.LF_HF_Ratio;
+            HRVStruct.lnHF(binIdx) = HRVBinData.lnHF;
+            HRVStruct.lnLF(binIdx) = HRVBinData.lnLF;
             %Some other feilds
-            idx = idx+1;
+            binIdx = binIdx+1;
         end
     end
     HRVStruct = structRowsToCols(HRVStruct);

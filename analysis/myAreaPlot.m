@@ -7,8 +7,8 @@ function [counts,xBins] = myAreaPlot(xIn,yIn,nBins,xBins,myTitle,xLabel,yLabel,n
     end
     if ~isempty(nBins)
         xBins = linspace(min(cellfun(@min,xIn)),max(cellfun(@max,xIn)),nBins+1); %bins for all
-    else %max bins
-        xBins = linspace(min(cellfun(@min,xIn)),max(cellfun(@max,xIn)),size(xIn,2)+1);
+    elseif isempty(xBins) %max bins
+        xBins = linspace(min(cellfun(@min,xIn)),max(cellfun(@max,xIn)),size(xIn,2)+1);       
     end
     for i=1:length(yIn)
         [xSorted,sortIdx] = sort(xIn{i});

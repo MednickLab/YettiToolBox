@@ -1,8 +1,11 @@
-function plotConditionsDashed(linesInCond,maxLines)
-    co = get(gca,'ColorOrder'); % Initial
+function plotConditionsDashed(linesInCond,maxLines,currentAxes)
+    if ~exist('currentAxes','var')
+        currentAxes = gca;      
+    end
+    co = get(currentAxes,'ColorOrder'); % Initial
     % Change to new colors.
     lineStyle = {'-','--',':','-.'};
-    lines = flip(get(gca,'Children'));
+    lines = flip(get(currentAxes,'Children'));
     for i=1:maxLines
         l = mod(i-1,linesInCond)+1;
         c = floor((i-1)/linesInCond)+1;

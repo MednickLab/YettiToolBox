@@ -7,9 +7,9 @@ function [y,N,B,A]= passFilter(x,fs,fc,type,Rs)
 % Variable Definition:
 % x: Input signal
 % fs: Input signal sampling frequency in Hz
-% fc: cutoff frequency
+% fc: cutoff frequency (Hz)
 % type: Filter type (high or low)
-% Rs: Attenuation
+% Rs: Attenuation (dB)
 % 
 % y: Filtered signal (output)
 % N: Filter order

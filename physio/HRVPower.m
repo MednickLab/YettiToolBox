@@ -12,11 +12,11 @@ RR=RPeaksInSecs(2:end)-RPeaksInSecs(1:end-1);
 RR_time=RPeaksInSecs(2:end);
 wrng_low=find(RR<0.4);
 if ~isempty(wrng_low)
-    warning=['You may have wrongly detected R peaks (RR< 0.4 s) at t=' num2str(RPeaksInSecs(wrng_low+1))]
+    warning=['You may have wrongly detected R peaks (RR< 0.4 s) at t=' num2str(RPeaksInSecs(wrng_low+1)')]
 end
 wrng_hi=find(RR>1.65);
 if ~isempty(wrng_hi)
-    warning=['You may have undetected R peaks in ' num2str(RPeaksInSecs(wrng_hi)) '<t<' num2str(RPeaksInSecs(wrng_hi+1))]
+    warning=['You may have undetected R peaks in ' num2str(RPeaksInSecs(wrng_hi)') '<t<' num2str(RPeaksInSecs(wrng_hi+1)')]
 end
 
 HR=60./RR;

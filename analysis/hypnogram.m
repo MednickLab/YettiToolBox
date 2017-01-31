@@ -43,7 +43,7 @@ function stagesOnly(stages)
     ax.XTick = round(linspace(1,size(eStages,2),6));
     ax.YDir='reverse';
     ax.YTick = [0 1 2 3 4];
-    ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','Stage 3'};
+    ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','SWS'};
     ax.YGrid = 'on';
   elseif numOfPlots>1
     % if there is more than one set of stage data, use subplots
@@ -66,7 +66,7 @@ function stagesOnly(stages)
       ax.XTick = round(linspace(1,size(eStages,2),6));
       ax.YDir='reverse';
       ax.YTick = [0 1 2 3 4];
-      ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','Stage 3'};
+      ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','SWS'};
       ax.YGrid = 'on';
     end
   end
@@ -92,7 +92,7 @@ function stagesTimes(stages, times)
     ax.XTickLabel=eTicks;
     ax.YDir='reverse';
     ax.YTick = [0 1 2 3 4];
-    ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','Stage 3'};
+    ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','SWS'};
     ax.YGrid = 'on';
   elseif numOfPlots>1
     D = cellfun('size',stages,2);
@@ -115,7 +115,7 @@ function stagesTimes(stages, times)
         ax.XTick = linspace(1,size(eStages,2),6);
         ax.YDir='reverse';
         ax.YTick = [0 1 2 3 4];
-        ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','Stage 3'};
+        ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','SWS'};
         ax.YGrid = 'on';
       else
         eStages = formatStages(stages{n}); % vector with respective stages
@@ -135,7 +135,7 @@ function stagesTimes(stages, times)
         ax.XTickLabel=eTicks;
         ax.YDir='reverse';
         ax.YTick = [0 1 2 3 4];
-        ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','Stage 3'};
+        ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','SWS'};
         ax.YGrid = 'on';
       end
     end
@@ -185,7 +185,7 @@ function stagesTimesFormat(stages, times, style)
 
     ax.YDir='reverse';
     ax.YTick = [0 1 2 3 4];
-    ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','Stage 3'};
+    ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','SWS'};
     ax.YGrid = 'on';
   elseif numOfPlots>1
     D = cellfun('size',stages,2)
@@ -207,7 +207,7 @@ function stagesTimesFormat(stages, times, style)
         ax.XTick=linspace(1,size(eStages,2),6);
         ax.YDir='reverse';
         ax.YTick = [0 1 2 3 4];
-        ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','Stage 3'};
+        ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','SWS'};
         ax.YGrid = 'on';
       else
         eStages = formatStages(stages{n}); % vector with respective stages
@@ -248,7 +248,7 @@ function stagesTimesFormat(stages, times, style)
 
         ax.YDir='reverse';
         ax.YTick = [0 1 2 3 4];
-        ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','Stage 3'};
+        ax.YTickLabel={'Awake','REM',' Stage 1','Stage 2','SWS'};
         ax.YGrid = 'on';
       end
     end

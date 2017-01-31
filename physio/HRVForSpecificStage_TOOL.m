@@ -63,15 +63,15 @@ stageIDs = [0,1,2,3,5];
 %Uncomment this if you want to import single file from Kubious
 %HRVFiles = {'D:\Users\Ben\Downloads\XXYY'};
 %Uncomment this if you want to import all the files at the location specified here:
-pathToKubiousFiles = 'D:\Users\Ben\Downloads\';
+pathToKubiousFiles = 'E:\For_Ben\';
 HRVFiles = getFileNamesThatContain(pathToKubiousFiles,{'hrv'},'.mat');
 
 %Import corrisponding stage information for the files:
-stageFileFolder = 'D:\Users\Ben\Downloads\';%This is the folder location where we should look for stage files.
+stageFileFolder = 'E:\For_Ben\';%This is the folder location where we should look for stage files.
 
 
 for f=1:length(HRVFiles)
-    [~,fname,~] = fileparts(HRVFiles{1});
+    [~,fname,~] = fileparts(HRVFiles{f});
     stageFileName = fname(1:end-4);%Stage files must be named like xx.
     stageFile = [stageFileFolder stageFileName '.txt'];
     try
@@ -117,14 +117,20 @@ for f=1:length(HRVFiles)
             HRVStruct.LF_HF_Ratio(binIdx) = HRVBinData.LF_HF_Ratio;
             HRVStruct.lnHF(binIdx) = HRVBinData.lnHF;
             HRVStruct.lnLF(binIdx) = HRVBinData.lnLF;
+            HRVStruct.meanRR(binIdx) = HRVBinData.meanRR;
             %Some other feilds
             binIdx = binIdx+1;
         end
     end
+    HRVStruct.file = repmat({stageFileName},length(HRVStruct.continousStageID),1);
     HRVStruct = structRowsToCols(HRVStruct);
-    HRVtable = struct2table(HRVStruct);
-    writetable(HRVtable,[pathToKubiousFiles stageFileName '_HRVBinAnalysis.xlsx']);
+    if ~exist('HRVtable','var')
+        HRVtable = struct2table(HRVStruct);
+    else
+        HRVtable = [HRVtable ; struct2table(HRVStruct)];
+    end
 end
+writetable(HRVtable,[pathToKubiousFiles date '_HRVBinAnalysis.xlsx']);
 
 
 

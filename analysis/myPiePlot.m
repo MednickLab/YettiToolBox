@@ -1,4 +1,4 @@
-function myPiePlot(proportions,labels,myTitle,type,plotly)   
+function myPiePlot(proportions,labels,colors,myTitle,type,plotly)   
     h = pie(proportions/sum(proportions));
     if ~exist('type','var')
         if ~exist('labels','var')
@@ -7,6 +7,14 @@ function myPiePlot(proportions,labels,myTitle,type,plotly)
             type = 1;
         end
     end
+    
+    if exist('colors','var') && ~isempty(colors)
+        hp = findobj(h, 'Type', 'patch');
+        for c=1:length(colors)
+            set(hp(c), 'FaceColor', colors{c});
+        end
+    end
+    
     if type==1 && exist('labels','var') && ~isempty(labels)
     hText = findobj(h,'Type','text'); % text object handles
     percentValues = get(hText,'String'); % percent values

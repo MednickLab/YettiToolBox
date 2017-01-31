@@ -41,9 +41,10 @@ function [ptb] = ptbInit(screenNum,screenChecksOff)
     ptb.textColor = [0 0 0];
     ptb.bgColor = [255 255 255];
     %% sound
-%     ptb.audioSampleRate = 44100;
-%     InitializePsychSound(1); 
-%     ptb.audioPort = PsychPortAudio('Open', [], [], [], ptb.audioSampleRate,1);
+    ptb.audioSampleRate = 44100;
+    InitializePsychSound(1); 
+    ptb.audioPort = PsychPortAudio('Open', [], [], [], ptb.audioSampleRate,1);
+    ptb.audioPortIn = PsychPortAudio('Open', [], 2, 0, ptb.audioSampleRate,1); % opens sound buffer in capture mode
     %% Input
     initKB();
     HideCursor;

@@ -1,8 +1,12 @@
-function plotConditionsDashed(linesInCond,maxLines,currentAxes)
-    if ~exist('currentAxes','var')
+function plotConditionsDashed(linesInCond,maxLines,currentAxes,colormap)
+    if ~exist('currentAxes','var') || isempty(currentAxes);
         currentAxes = gca;      
     end
-    co = get(currentAxes,'ColorOrder'); % Initial
+    if exist('colormap','var')
+        co = colormap;
+    else
+        co = get(currentAxes,'ColorOrder'); % Initial
+    end
     % Change to new colors.
     lineStyle = {'-','--',':','-.'};
     lines = flip(get(currentAxes,'Children'));

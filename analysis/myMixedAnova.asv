@@ -5,6 +5,7 @@ function myMixedAnova(y,cond1,cond1Lab,cond1Title,cond1Type,cond2,cond2Lab,cond2
 % *Y* is the input data, and should be a large list of outcome variables, one for each observation.
 % IMPORTANT: if using a within subjects factor, Y data MUST be in correct subjects order.
 % e.g. Subject1_time1, subject1_time2, subject2_time3, subject2_time1, subject2_time2 etc
+% Also ok is 
 %
 % *cond1* is a cell array, each element in the cell array is a vector of ones and zeros specifing
 % which group each data came from.

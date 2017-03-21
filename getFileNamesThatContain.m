@@ -2,7 +2,7 @@ function files = getFileNamesThatContain(location,strToContain,fileType,recursiv
 %% Get filenames that in *location* that contain the substrings in the cell
 %% array *strToContain* and that match the optional *fileType*
 %% e.g. getFilesThatContain(pwd,{'STATS','Sub1'},'.mat') 
-%% will search recursivly (set *recursive* to true)
+%% will search recursivly through folders (set *recursive* to true)
 %% sort order can be by date last modified (first modified to last modified) ('date') or aphabetical ('a2z')
 %% if no specific strToContrain is supplied, the whole set of files (recursive or not) is returned
     if ~exist('recursive','var')

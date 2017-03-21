@@ -1,7 +1,8 @@
-function resid = myRegression(y,X,yLab,labls,omitOutliers)
+function [resid,R2,df,k] = myRegression(y,X,yLab,labls,omitOutliers)
     goodLocs = 1:length(y);
     resid = nan(size(y));
     notNans = ~isnan(sum([y X],2));
+    k = min(size(X));
     y = y(notNans);
     X = X(notNans,:);
     goodLocs = goodLocs(notNans);
@@ -16,6 +17,7 @@ function resid = myRegression(y,X,yLab,labls,omitOutliers)
     st2 = regstats(y,X,'linear','adjrsquare');
     st3 = regstats(y,X,'linear','fstat');
     st4 = regstats(y,X,'linear','standres');
+    st5 = regstats(y,X,'linear','rsquare');
     resid(goodLocs) = st4.standres;
     if st3.fstat.pval < 0.01
         allsig = '> (**)';
@@ -48,6 +50,8 @@ function resid = myRegression(y,X,yLab,labls,omitOutliers)
     else
        sig='';
     end
-    fprintf('%0.5f%s\nR2(adj)=%0.2f, p=%0.12f, df=%i\n\n',st1.tstat.beta(1),sig,st2.adjrsquare,st3.fstat.pval,st1.tstat.dfe);
+    fprintf('%0.5f%s\nR2=%.5f, R2(adj)=%0.2f, p=%0.12f, df=%i\n\n',st1.tstat.beta(1),sig,st5.rsquare,st2.adjrsquare,st3.fstat.pval,st1.tstat.dfe);
+    R2 = st5.rsquare;
+    df = st1.tstat.dfe;
     
 end

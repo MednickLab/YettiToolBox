@@ -22,7 +22,6 @@ function [back0,back1,unNormedBack0,unNormedBack1] = calcTransitionProbs(epochSt
         back0(sleepPeriods.vals(d)) = back0(sleepPeriods.vals(d))+1;
         if d+1 <= numTransitions
             if sleepPeriods.vals(d+1) >= 6
-                %warning('Transition to wake detected, wake should only be at the start of the record, ignoring')
                 continue
             end
             back1(sleepPeriods.vals(d),sleepPeriods.vals(d+1))=back1(sleepPeriods.vals(d),sleepPeriods.vals(d+1))+1; 

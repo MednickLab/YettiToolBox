@@ -1,4 +1,4 @@
-function playMovie(moviename, windowrect)
+function [movieData,exit] = playMovie(ptb, moviename)
 % Most simplistic demo on how to play a movie.
 %
 % SimpleMovieDemo(moviename [, windowrect=[]]);
@@ -16,7 +16,7 @@ function playMovie(moviename, windowrect)
 % History:
 % 02/05/2009  Created. (MK)
 % 06/17/2013  Cleaned up. (MK)
-Screen('Preference', 'SkipSyncTests', 1);
+exit = false;
 
 % Check if Psychtoolbox is properly installed:
 AssertOpenGL;
@@ -27,35 +27,24 @@ if IsWin && ~IsOctave && psychusejava('jvm')
     warning('Running on Matlab for Microsoft Windows, with JVM enabled!');
 end
 
-if nargin < 1 || isempty(moviename)
-    % No moviename given: Use our default movie:
-    moviename = [ PsychtoolboxRoot 'PsychDemos/MovieDemos/DualDiscs.mov' ];
-end
-
-if nargin < 2 || isempty(windowrect)
-    windowrect = [];
-end
-
-% Wait until user releases keys on keyboard:
-KbReleaseWait;
-
-% Select screen for display of movie:
-screenid = max(Screen('Screens'));
-
-try
-    % Open 'windowrect' sized window on screen, with black [0] background color:
-    win = Screen('OpenWindow', screenid, 0, windowrect);
-    
+try  
     % Open movie file:
-    movie = Screen('OpenMovie', win, moviename);
+    [movie,dur,fps] = Screen('OpenMovie', ptb.win, moviename);
     
     % Start playback engine:
     Screen('PlayMovie', movie, 1);
+    idx = 1;
+    idxSec = 1;
+    prevSec = 1;
+    movieData.movieName = moviename;
+    movieData.frames = nan(round(dur*fps),1);
+    movieData.secSync = nan(floor(dur),1);
+    movieData.initSyncTimes = initTaskSync(ptb);
     
     % Playback loop: Runs until end of movie or keypress:
-    while ~KbCheck
+    while ~exit
         % Wait for next movie frame, retrieve texture handle to it
-        tex = Screen('GetMovieImage', win, movie);
+        tex = Screen('GetMovieImage', ptb.win, movie);
         
         % Valid texture returned? A negative value means end of movie reached:
         if tex<=0
@@ -64,13 +53,22 @@ try
         end
         
         % Draw the new texture immediately to screen:
-        Screen('DrawTexture', win, tex);
-        
+        Screen('DrawTexture', ptb.win, tex,[],[0 0 ptb.xRes ptb.yRes]);
+        if idx > prevSec+fps
+            addSyncRec(ptb);
+        end
         % Update display:
-        Screen('Flip', win);
+        movieData.frames(idx) = Screen('Flip', ptb.win);        
+        if idx > prevSec+fps          
+            prevSec = idx;
+            movieData.secSync(idxSec) = movieData.frames(idx);
+            idxSec = idxSec+1;
+        end
+        idx = idx+1;
         
         % Release texture:
         Screen('Close', tex);
+        if strcmp(getLastKey(),'ESCAPE'); exit=true; break; end;
     end
     
     % Stop playback:
@@ -78,9 +76,6 @@ try
     
     % Close movie:
     Screen('CloseMovie', movie);
-    
-    % Close Screen, we're done:
-    sca;
     
 catch %#ok<CTCH>
     sca;

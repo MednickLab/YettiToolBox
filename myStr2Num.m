@@ -4,6 +4,10 @@ function num=myStr2Num(strOrNum)
         num = nan;
         return
     end
+    if iscell(strOrNum)
+        num=myStr2Num(strOrNum{1});
+        return
+    end  
     if isnumeric(strOrNum)
         num=strOrNum;
     else

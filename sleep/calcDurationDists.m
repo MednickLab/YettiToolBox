@@ -4,7 +4,7 @@ function [meanDurations,distDurations,normalizedDistDurations] = calcDurationDis
     %bins are the bins for all histograms, if left out or empty [], then the default of [0:5:45 inf]
     %will apply. nbins is the number of bins to use, and will use histcounts automatic scalling for
     %the edges
-    if ~exist('bins','var') && ~isempty(nbins)
+    if ~exist('bins','var') && (~exist('nbins','var') || ~isempty(nbins))
         bins = [0:5:50 inf];
     end
     

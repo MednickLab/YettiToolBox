@@ -1,10 +1,15 @@
 function myPiePlot(proportions,labels,colors,myTitle,type,plotly)   
+    %Plots a pie chart with an array of *proportions* (between 0 and 1).
+    % If type=1 and labels not empty:
+    %   Corresponding labels will be plotted
+    % If type=2 and labels not empty:
+    %   A legend with labels will be plotted  
     h = pie(proportions/sum(proportions));
     if ~exist('type','var')
         if ~exist('labels','var')
         	type = 0;
         else
-            type = 1;
+            type = 1; %Plot Labels
         end
     end
     
@@ -12,6 +17,8 @@ function myPiePlot(proportions,labels,colors,myTitle,type,plotly)
         hp = findobj(h, 'Type', 'patch');
         for c=1:length(colors)
             set(hp(c), 'FaceColor', colors{c});
+            set(hp(c), 'EdgeColor', [1 1 1]); %Color of edge
+            set(hp(c), 'LineWidth', 2); %Color of edge           
         end
     end
     

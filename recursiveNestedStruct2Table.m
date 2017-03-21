@@ -16,7 +16,7 @@ function tParent = recursiveNestedStruct2Table(level,nameOfLevel)
         tParent = struct2table(rotateAndFillStruct(level));        
     end
     fNames = fieldnames(tParent);
-    fNames = fNames(~strcmp(fNames,'Properties'));
+    fNames = fNames(~strcmp(fNames,'Properties') & ~strcmp(fNames,'Variables') & ~strcmp(fNames,'DimensionNames') & ~strcmp(fNames,'Row'));
     if ~iscell(fNames)
         fNames = {fNames};
     end
@@ -28,7 +28,7 @@ function tParent = recursiveNestedStruct2Table(level,nameOfLevel)
     tRow = cell(height(tParent),1);
     for row = 1:height(tParent) %step through each row       
         tChildren = cell(size(structCols));        
-        for col = structCols;  %Step through cols that contain structs.
+        for col = structCols  %Step through cols that contain structs.
             tChildren{col==structCols} = recursiveNestedStruct2Table(tParent{row,col},tParent.Properties.VariableNames{col}); %recursive call
             tChildren{col==structCols}.(tParent.Properties.VariableNames{col}) = row*ones(height(tChildren{col==structCols}),1); 
             tChildren{col==structCols} = [tChildren{col==structCols}(:,end) tChildren{col==structCols}(:,1:end-1)];
@@ -59,7 +59,7 @@ function tParent = recursiveNestedStruct2Table(level,nameOfLevel)
     function A = fillNans(A,maxHeight)
         %adds Nans table or struct *A* so that all feilds are *maxHeight*
         fNames_ = fieldnames(A);
-        fNames_ = fNames_(~strcmp(fNames_,'Properties'));
+        fNames_ = fNames_(~strcmp(fNames_,'Properties') & ~strcmp(fNames_,'Variables') & ~strcmp(fNames_,'DimensionNames') & ~strcmp(fNames_,'Row'));
         for r = 1:length(fNames_)
             if isempty(A.(fNames_{r}))
                 A = rmfield(A,fNames_{r});
@@ -97,6 +97,14 @@ function tParent = recursiveNestedStruct2Table(level,nameOfLevel)
                    sA(sRow).(vNames{v}) = sA(sRow-1).(vNames{v});
                 end
             end
+        end
+    end
+
+    function s = myTable2Struct(t)
+        fNames_ = fieldnames(t);
+        fNames_ = fNames_(~strcmp(fNames_,'Properties') & ~strcmp(fNames_,'Variables') & ~strcmp(fNames_,'DimensionNames') & ~strcmp(fNames_,'Row'));
+        for i=1:length(fNames_)
+            s.(fNames_{i}) = t.(fNames_{i});
         end
     end
 end

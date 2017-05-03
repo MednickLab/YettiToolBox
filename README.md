@@ -103,6 +103,16 @@ subDataTable = recursiveNestedStruct2Table(subData)
 
 ```strOut = strinsrt(str,loc,substr)```: Inserts substr into another str at location loc
 
+```struct2csv(s,fn)```: Saves a structure (s) to a csv file named fs. See [MATLAB central](https://www.mathworks.com/matlabcentral/fileexchange/34889-struct2csv)
+
+```structArray2structOfArrays(structArray)```: converts a 'structArray' e.g. p(1).a =1 , p(2).a=2 to sturct of arrays
+    %p.a(1) = 1, p.a(2) = 2
+    
+```function structData = structRowsToCols(structData)``` Converts all struct feilds that are row vectors (dim(1) < dim(2)) to column vectors
+
+```dataOut = zscoreAcrossVariables(dataIn)```takes a series of arrays, one for each element in the cell array *dataIn* and zscores across all data across in all arrays, then repacks into original input cell array format 
+
+
 
 
 

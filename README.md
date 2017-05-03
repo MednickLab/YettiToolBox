@@ -108,7 +108,7 @@ subDataTable = recursiveNestedStruct2Table(subData)
 ```structArray2structOfArrays(structArray)```: converts a 'structArray' e.g. p(1).a =1 , p(2).a=2 to sturct of arrays
     %p.a(1) = 1, p.a(2) = 2
     
-```function structData = structRowsToCols(structData)``` Converts all struct feilds that are row vectors (dim(1) < dim(2)) to column vectors
+```structData = structRowsToCols(structData)``` Converts all struct feilds that are row vectors (dim(1) < dim(2)) to column vectors
 
 ```dataOut = zscoreAcrossVariables(dataIn)```takes a series of arrays, one for each element in the cell array *dataIn* and zscores across all data across in all arrays, then repacks into original input cell array format 
 
